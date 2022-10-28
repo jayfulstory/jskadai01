@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>run</title>
+    <style>
+      body {
+        margin-top: 40px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        height: 100vh;
+      }
+      .btnBallon {
+        margin-bottom: 40px;
+      }
+      .ballon {
+        width: 100px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .boom {
+        width: 300px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        opacity: 0;
+      }
+
+      #flag {
+        margin-left: 420px;
+      }
+    </style>
+    <script
+      src="https://kit.fontawesome.com/800665659c.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+
+  <body>
+    <h2>誰が一番早いかな？</h2>
+    <p>ボタンをクリックしたらboom！</p>
+    <form>
+      <input
+        type="button"
+        value="boom"
+        onclick="run()"
+        class="btnBallon"
+        id="btnBallon"
+        style="position: relative; z-index: 100"
+      />
+      <input
+        type="button"
+        value="reset"
+        onclick="resetBallon()"
+        class="btnReset"
+        id="btnReset"
+        style="position: relative; z-index: 100"
+      />
+    </form>
+    <p id="timer"></p>
+    <div class="ballon">
+      <img src="ballon.png" alt="ballon" class="ballon" id="ballon" />
+      <img src="boom.png" alt="boom" class="boom" id="boom" />
+    </div>
+
+    <script>
+      let milliseconds = 0;
+      let seconds = 0;
+      let interval;
+
+      var ballon = 100;
+      const ball = document.getElementById('ballon');
+      const boom = document.getElementById('boom');
+      const timer = document.getElementById('timer');
+      let flag = 0;
+      function run() {
+        ballon += 10;
+        if (flag == 0) {
+          interval = setInterval(operateTimer, 10);
+          flag++;
+        }
+        if (ballon >= 300) {
+          boom.style.opacity = 1;
+          ball.style.opacity = 0;
+          ballon = 100;
+          timer.innerHTML = seconds + '.' + milliseconds + '秒';
+        }
+        ball.style.width = ballon + 'px';
+      }
+
+      // 風船をリセットする
+      function resetBallon() {
+        clearInterval(interval);
+        timer.innerHTML = '';
+        flag = 0;
+        milliseconds = 0;
+        seconds = 0;
+        ballon = 100;
+        ball.style.width = ballon + 'px';
+        boom.style.opacity = 0;
+        ball.style.opacity = 1;
+      }
+
+      // 100msたびに数字が上がる
+      function operateTimer() {
+        milliseconds++;
+        if (milliseconds > 99) {
+          seconds++;
+          milliseconds = 0;
+        }
+      }
+    </script>
+  </body>
+</html>
